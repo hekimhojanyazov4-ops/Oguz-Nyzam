@@ -40,8 +40,9 @@ public class UsersController : ControllerBase
         
         var user = new User
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.NewGuid(), 
             FullName = dto.FullName,
+            FacultyId = dto.FacultyId,
             PasswordHash = dto.Password,
             RoleId = null
         };
@@ -53,6 +54,7 @@ public class UsersController : ControllerBase
         {
             Id = user.Id,
             FullName = user.FullName,
+            FacultyId = user.FacultyId,
             RoleName = "Rol Berilmedik"
         });
     }
