@@ -9,7 +9,7 @@ public class CreateAttendanceDetailDto
 
 public class CreateAttendanceRecordDto
 {
-    public DateTime Date { get; set; }
+    public DateOnly Date { get; set; }
     public int GroupId { get; set; }
     public Guid TeacherId { get; set; }
     public List<CreateAttendanceDetailDto> Details { get; set; } = new();
@@ -28,11 +28,11 @@ public class AttendanceDetailDto
 public class AttendanceRecordDto
 {
     public Guid Id { get; set; }
-    public DateTime Date { get; set; }
+    public DateOnly Date { get; set; }
     public int GroupId { get; set; }
     public int GroupNumber { get; set; }
     public string TeacherName { get; set; } = string.Empty;
     public bool IsSubmitted { get; set; }
     public DateTime? SubmittedAt { get; set; }
-    public List<AttendanceDetailDto> Detail { get; set; } = new();
+    public List<AttendanceDetailDto> Details { get; set; } = new();
 }

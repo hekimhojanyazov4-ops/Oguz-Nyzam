@@ -6,6 +6,7 @@ public class AttendanceRecord
 
     public DateOnly Date { get; set; }
 
+    public int GroupId { get; set; }
     public Group Group { get; set; } = null!;
 
     public Guid TeacherId { get; set; }
