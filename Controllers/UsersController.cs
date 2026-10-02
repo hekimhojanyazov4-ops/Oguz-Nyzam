@@ -25,6 +25,7 @@ public class UsersController : ControllerBase
             {
                 Id = u.Id,
                 FullName = u.FullName,
+                FacultyId = u.FacultyId,
                 RoleName = u.Role != null ? u.Role.Name : "Rol berilmedik"
             }).ToListAsync();
 
@@ -42,6 +43,7 @@ public class UsersController : ControllerBase
         {
             Id = Guid.NewGuid(),
             FullName = dto.FullName,
+            FacultyId = dto.FacultyId,
             PasswordHash = dto.Password,
             RoleId = null
         };
@@ -53,6 +55,7 @@ public class UsersController : ControllerBase
         {
             Id = user.Id,
             FullName = user.FullName,
+            FacultyId = user.FacultyId,
             RoleName = "Rol Berilmedik"
         });
     }
@@ -92,5 +95,18 @@ public class UsersController : ControllerBase
            FullName = user.FullName,
            RoleName = user.Role!.Name 
         });
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(Guid id)
+    {
+        var user = await _context.Users.FindAsync(id);
+        if (user == null)
+            return NotFound("User tapylmady.");
+
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
     }
 }

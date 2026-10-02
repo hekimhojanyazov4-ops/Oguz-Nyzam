@@ -3,6 +3,7 @@ namespace Oguz_Nyzam.API.DTOs;
 public class RegisterDto
 {
     public string FullName { get; set; } = string.Empty;
+    public int FacultyId { get; set; }
     public string Password { get; set; } = string.Empty;
 }
 
@@ -22,5 +23,6 @@ public class UserDto
 {
     public Guid Id { get; set; }
     public string FullName { get; set; } = string.Empty;
+    public int FacultyId { get; set; }
     public string? RoleName { get; set; }
 }
