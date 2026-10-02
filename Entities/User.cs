@@ -13,5 +13,6 @@ public class User
     public Role Role { get; set; } = null!;
 
     public int FacultyId { get; set; }
-    public Faculty Faculty { get; set; }
+
+    public Faculty Faculty { get; set; } = null!;
 }

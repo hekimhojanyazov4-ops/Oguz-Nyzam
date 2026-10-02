@@ -24,5 +24,6 @@ public class UserDto
     public Guid Id { get; set; }
     public int FacultyId { get; set; }
     public string FullName { get; set; } = string.Empty;
+    public int FacultyId { get; set; }
     public string? RoleName { get; set; }
 }
