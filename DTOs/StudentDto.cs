@@ -20,5 +20,4 @@ public class StudentDto
     public string FullName { get; set; } = string.Empty;
     public int StudentCardNumber { get; set; }
     public int GroupId { get; set; }
-    public int GroupNumber { get; set; }
 }

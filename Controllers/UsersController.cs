@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Oguz_Nyzam.API.Data;
 using Oguz_Nyzam.API.DTOs;
 using Oguz_Nyzam.API.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Oguz_Nyzam.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UsersController : ControllerBase
 {
     private readonly AppDbContext _context;
@@ -17,6 +19,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "1")]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
     {
         var users = await _context.Users
@@ -26,13 +29,14 @@ public class UsersController : ControllerBase
                 Id = u.Id,
                 FullName = u.FullName,
                 FacultyId = u.FacultyId,
-                RoleName = u.Role != null ? u.Role.Name : "Rol berilmedik"
+                RoleId = u.Role != null ? u.Role.Id : null
             }).ToListAsync();
 
         return Ok(users);
     }
 
     [HttpPost("assign-role")]
+    [Authorize(Roles = "1")]
     public async Task<IActionResult> AssignRole(AssignRoleDto dto)
     {
         var user = await _context.Users.FindAsync(dto.UserId);
@@ -50,6 +54,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "1")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
         var user = await _context.Users.FindAsync(id);

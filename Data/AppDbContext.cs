@@ -36,8 +36,9 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Role>().HasData(
-            new Role { Id = 1, Name = "Dean" },
-            new Role { Id = 2, Name = "Deputy Dean" }
+            new Role { Id = 1, Name = "Admin" },
+            new Role { Id = 2, Name = "Dean" },
+            new Role { Id = 3, Name = "Deputy Dean" }
         );
 
         modelBuilder.Entity<ViolationCategory>().HasData(

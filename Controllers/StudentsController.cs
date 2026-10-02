@@ -27,9 +27,8 @@ public class StudentsController : ControllerBase
             {
                 Id = s.Id,
                 FullName = s.FullName,
-                StudentId = s.StudentId,
+                StudentCardNumber = s.StudentCardNumber,
                 GroupId = s.GroupId,
-                GroupNumber = s.Group.GroupNumber
             }).ToListAsync();
         
         return Ok(students);
@@ -46,7 +45,7 @@ public class StudentsController : ControllerBase
         {
             Id = Guid.NewGuid(),
             FullName = dto.FullName,
-            StudentId = dto.StudentId,
+            StudentCardNumber = dto.StudentCardNumber,
             GroupId = dto.GroupId
         };
 
@@ -57,9 +56,8 @@ public class StudentsController : ControllerBase
         {
             Id = student.Id,
             FullName = student.FullName,
-            StudentId = student.StudentId,
+            StudentCardNumber = student.StudentCardNumber,
             GroupId = student.GroupId,
-            GroupNumber = group.GroupNumber
         });
     }
 
@@ -75,7 +73,7 @@ public class StudentsController : ControllerBase
             return NotFound("Gorkezen toparnyz tapylmady.");
 
         student.FullName = dto.FullName;
-        student.StudentId = dto.StudentId;
+        student.StudentCardNumber = dto.StudentCardNumber;
         student.GroupId = dto.GroupId;
 
         await _context.SaveChangesAsync();

@@ -4,6 +4,7 @@ using Oguz_Nyzam.API.Data;
 using Oguz_Nyzam.API.DTOs;
 using Oguz_Nyzam.API.Entities;
 using Oguz_Nyzam.API.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Oguz_Nyzam.API.Controllers;
 
@@ -20,6 +21,7 @@ public class AuthController : ControllerBase
         _jwtTokenGenerator = jwtTokenGenerator;
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto dto)
     {
@@ -55,6 +57,7 @@ public class AuthController : ControllerBase
         });
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto dto)
     {

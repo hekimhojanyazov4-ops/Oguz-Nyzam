@@ -6,7 +6,7 @@ public class Student
 
     public string FullName { get; set; } = string.Empty;
 
-    public int StudentId { get; set; }
+    public int StudentCardNumber { get; set; }
 
     public int GroupId { get; set; }
     public Group Group { get; set; } = null!;
