@@ -55,3 +55,14 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+
+./frontend/.gitignore
+./frontend/eslint.config.js
+./frontend/jest.config.js
+./frontend/package.json
+.frontend/tsconfig.json
+./frontend/vite.config.js
+./frontend/package-lock.json
+./frontend/yarn.lock
+./frontend/node_modules/
