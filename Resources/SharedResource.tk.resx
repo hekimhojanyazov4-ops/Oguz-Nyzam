@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="GroupNotFound" xml:space="preserve"><value>Görkezilen topar bazada ýok.</value></data>
+  <data name="StudentNotFound" xml:space="preserve"><value>Talyp tapylmady.</value></data>
+  <data name="CourseNotFound" xml:space="preserve"><value>Görkezilen kurs tapylmady.</value></data>
+  <data name="FacultyNotFound" xml:space="preserve"><value>Görkezilen fakultet tapylmady.</value></data>
+  <data name="GroupAlreadyExists" xml:space="preserve"><value>Saýlanan kursda bu belgili topar eýýäm bar.</value></data>
+  <data name="InvalidGroupDetails" xml:space="preserve"><value>Toparyň dogry položitel belgisini we kursuny giriziň.</value></data>
+  <data name="UserAlreadyRegistered" xml:space="preserve"><value>Bu ulanyjy ady eýýäm hasaba alnan.</value></data>
+  <data name="InvalidCredentials" xml:space="preserve"><value>Ulanyjy ady ýa-da açar sözi nädogry.</value></data>
+  <data name="AccountPendingApproval" xml:space="preserve"><value>Siziň hasabyňyz entek administrator tarapyndan tassyklanmady.</value></data>
+  <data name="AttendanceSaved" xml:space="preserve"><value>Gatnaşyk ýazgysy üstünlikli saklandy.</value></data>
+  <data name="DuplicateAttendanceStudents" xml:space="preserve"><value>Gatnaşyk ýazgysynda bir talyp bir gezekden köp görkezilip bilinmez.</value></data>
+  <data name="AttendanceStudentGroupMismatch" xml:space="preserve"><value>Talyplaryň biri ýa-da köpüsi saýlanan topara degişli däl.</value></data>
+  <data name="ViolationCategoryNotFound" xml:space="preserve"><value>Saýlanan düzgün bozulma görnüşi tapylmady.</value></data>
+  <data name="ViolationAbsent" xml:space="preserve"><value>Gatnaşmady</value></data>
+  <data name="ViolationNoStudentCard" xml:space="preserve"><value>Talyp şahadatnamasy ýok</value></data>
+  <data name="ViolationUniform" xml:space="preserve"><value>Geýim düzgüni bozuldy</value></data>
+  <data name="AttendancePresent" xml:space="preserve"><value>Gatnaşdy (düzgün bozulmady)</value></data>
+  <data name="UserNotFound" xml:space="preserve"><value>Ulanyjy tapylmady.</value></data>
+  <data name="RoleNotFound" xml:space="preserve"><value>Wezipe tapylmady.</value></data>
+  <data name="RoleAssigned" xml:space="preserve"><value>'{0}' ulanyjysyna '{1}' wezipesi üstünlikli berildi.</value></data>
+  <data name="RoleNameAdministrator" xml:space="preserve"><value>Administrator</value></data>
+  <data name="RoleNameDean" xml:space="preserve"><value>Dekan</value></data>
+  <data name="RoleNameDeputyDean" xml:space="preserve"><value>Dekan orunbasary</value></data>
+  <data name="InvalidAttendanceDate" xml:space="preserve"><value>Gatnaşygyň dogry senesini giriziň.</value></data>
+  <data name="GroupHasNoStudents" xml:space="preserve"><value>Bu toparda gatnaşyk üçin talyp ýok.</value></data>
+</root>

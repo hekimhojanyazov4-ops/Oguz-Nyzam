@@ -18,4 +18,18 @@ If you are developing a production application, we recommend using TypeScript wi
 =======
 # Oguz-Nyzam
 Dean Control
+
+## Localization
+This project now includes localization support for English (en), Russian (ru), and Turkmen (tk).
+
+Backend (ASP.NET Core):
+- Resources are under Resources/SharedResource.resx and culture-specific files (.ru.resx, .tk.resx).
+- Request localization is configured in Program.cs. API controllers use IStringLocalizer<SharedResource> for localized messages.
+
+Frontend (React):
+- i18next + react-i18next were added. Initialization is in src/i18n.js.
+- Locale JSON files: src/locales/en.json, src/locales/ru.json, src/locales/tk.json.
+- A language selector is added to the NavBar component.
+
+To change the frontend language at runtime use the selector in the top-right of the app. To change the API default culture, edit Program.cs where supported cultures are configured.
 >>>>>>> c8812d265fdb9c2b3478c1e1758c761c2e786187

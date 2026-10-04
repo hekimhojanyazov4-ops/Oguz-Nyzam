@@ -5,6 +5,8 @@ using Oguz_Nyzam.API.DTOs;
 using Oguz_Nyzam.API.Entities;
 using Oguz_Nyzam.API.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Localization;
+using Oguz_Nyzam.API.Resources;
 
 namespace Oguz_Nyzam.API.Controllers;
 
@@ -14,11 +16,16 @@ public class AuthController : ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly JwtTokenGenerator _jwtTokenGenerator;
+    private readonly IStringLocalizer<SharedResource> _localizer;
 
-    public AuthController(AppDbContext context, JwtTokenGenerator jwtTokenGenerator)
+    public AuthController(
+        AppDbContext context,
+        JwtTokenGenerator jwtTokenGenerator,
+        IStringLocalizer<SharedResource> localizer)
     {
         _context = context;
         _jwtTokenGenerator = jwtTokenGenerator;
+        _localizer = localizer;
     }
 
     [AllowAnonymous]
@@ -27,11 +34,11 @@ public class AuthController : ControllerBase
     {
         var existingFaculty = await _context.Faculties.AnyAsync(f => f.Id == dto.FacultyId);
         if (!existingFaculty)
-            return BadRequest("Fakultet tapylmady.");
+            return BadRequest(_localizer["FacultyNotFound"]);
 
         var existingUser = await _context.Users.AnyAsync(u => u.FullName == dto.FullName);
         if (existingUser) 
-            return BadRequest("Ulanyjy ady eyyam registrasya edilen.");
+            return BadRequest(_localizer["UserAlreadyRegistered"]);
         
         var user = new User
         {
@@ -45,15 +52,13 @@ public class AuthController : ControllerBase
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        var token = _jwtTokenGenerator.GenerateToken(user);
-
         return Ok(new UserDto
         {
             Id = user.Id,
             FullName = user.FullName,
             FacultyId = user.FacultyId,
             RoleId = null,
-            Token = token
+            Token = string.Empty
         });
     }
 
@@ -66,10 +71,10 @@ public class AuthController : ControllerBase
             .FirstOrDefaultAsync(r => r.FullName == dto.FullName && r.PasswordHash == dto.Password);
         
         if (user == null)
-            return Unauthorized("Ulanyjy ady yada parol yalnys.");
+            return Unauthorized(_localizer["InvalidCredentials"]);
         
         if (user.RoleId == null)
-            return BadRequest("Sizin akkoundynyz intek admin tarapyndan tassyklanmadyk.");
+            return BadRequest(_localizer["AccountPendingApproval"]);
         
         var token = _jwtTokenGenerator.GenerateToken(user);
 

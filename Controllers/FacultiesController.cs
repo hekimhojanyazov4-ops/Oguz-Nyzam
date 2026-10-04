@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Oguz_Nyzam.API.Data;
 using Oguz_Nyzam.API.DTOs;
@@ -28,6 +29,7 @@ public class FacultiesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "1")]
     public async Task<ActionResult<FacultyDto>> CreateFaculty(CreateFacultyDto dto)
     {
         var faculty = new Faculty

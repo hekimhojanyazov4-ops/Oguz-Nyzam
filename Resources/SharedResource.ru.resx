@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="GroupNotFound" xml:space="preserve"><value>Указанная группа не найдена в базе данных.</value></data>
+  <data name="StudentNotFound" xml:space="preserve"><value>Студент не найден.</value></data>
+  <data name="CourseNotFound" xml:space="preserve"><value>Указанный курс не найден.</value></data>
+  <data name="FacultyNotFound" xml:space="preserve"><value>Указанный факультет не найден.</value></data>
+  <data name="GroupAlreadyExists" xml:space="preserve"><value>В выбранном курсе уже есть группа с таким номером.</value></data>
+  <data name="InvalidGroupDetails" xml:space="preserve"><value>Укажите корректный положительный номер группы и курс.</value></data>
+  <data name="UserAlreadyRegistered" xml:space="preserve"><value>Пользователь с таким именем уже зарегистрирован.</value></data>
+  <data name="InvalidCredentials" xml:space="preserve"><value>Неверное имя пользователя или пароль.</value></data>
+  <data name="AccountPendingApproval" xml:space="preserve"><value>Ваша учетная запись еще не одобрена администратором.</value></data>
+  <data name="AttendanceSaved" xml:space="preserve"><value>Посещаемость успешно сохранена.</value></data>
+  <data name="DuplicateAttendanceStudents" xml:space="preserve"><value>В записи посещаемости студент не может указываться более одного раза.</value></data>
+  <data name="AttendanceStudentGroupMismatch" xml:space="preserve"><value>Один или несколько студентов не относятся к выбранной группе.</value></data>
+  <data name="ViolationCategoryNotFound" xml:space="preserve"><value>Выбранная категория нарушения не найдена.</value></data>
+  <data name="ViolationAbsent" xml:space="preserve"><value>Отсутствовал</value></data>
+  <data name="ViolationNoStudentCard" xml:space="preserve"><value>Нет студенческого билета</value></data>
+  <data name="ViolationUniform" xml:space="preserve"><value>Проблема с формой</value></data>
+  <data name="AttendancePresent" xml:space="preserve"><value>Присутствовал (нарушений нет)</value></data>
+  <data name="UserNotFound" xml:space="preserve"><value>Пользователь не найден.</value></data>
+  <data name="RoleNotFound" xml:space="preserve"><value>Роль не найдена.</value></data>
+  <data name="RoleAssigned" xml:space="preserve"><value>Роль «{1}» успешно назначена пользователю «{0}».</value></data>
+  <data name="RoleNameAdministrator" xml:space="preserve"><value>Администратор</value></data>
+  <data name="RoleNameDean" xml:space="preserve"><value>Декан</value></data>
+  <data name="RoleNameDeputyDean" xml:space="preserve"><value>Заместитель декана</value></data>
+  <data name="InvalidAttendanceDate" xml:space="preserve"><value>Укажите корректную дату посещаемости.</value></data>
+  <data name="GroupHasNoStudents" xml:space="preserve"><value>В этой группе нет студентов для отметки.</value></data>
+</root>

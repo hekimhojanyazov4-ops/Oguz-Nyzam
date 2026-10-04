@@ -1,15 +1,18 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { apiPost } from '../api'
 import { useApiResource } from '../hooks/useApiResource'
 import { useAsyncAction } from '../hooks/useAsyncAction'
+import { ArrowUpRight, CalendarDays, ClipboardCheck, Users } from 'lucide-react'
 
 const violations = [
-  { id: 1, name: 'Absent' },
-  { id: 2, name: 'No student card' },
-  { id: 3, name: 'Uniform issue' },
+  { id: 1, key: 'absent' },
+  { id: 2, key: 'noCard' },
+  { id: 3, key: 'uniformIssue' },
 ]
 
 export default function AttendancePage({ user }) {
+  const { t } = useTranslation()
   const { data: groups } = useApiResource('/Groups')
   const [groupId, setGroupId] = useState('')
   const { data: students, loading: studentsLoading } = useApiResource(groupId ? `/Students/group/${groupId}` : null)
@@ -39,7 +42,7 @@ export default function AttendancePage({ user }) {
       Details: details,
     }))
     if (result) {
-      setSaved(`Attendance saved for ${students.length} students.`)
+      setSaved(students.length)
       setMarks({})
       refreshHistory()
     }
@@ -58,30 +61,30 @@ export default function AttendancePage({ user }) {
 
   return (
     <main className="page-shell">
-      <section className="page-heading"><div><p className="eyebrow">ACADEMIC RECORDS / DAILY CHECK</p><h1>Attendance</h1></div><span className="section-count">{groups.length} groups</span></section>
+      <section className="page-heading"><div><p className="eyebrow">{t('attendance.eyebrow')}</p><h1><ClipboardCheck size={30} aria-hidden="true" />{t('attendance.heading')}</h1></div><span className="section-count"><Users size={15} aria-hidden="true" />{t('attendance.groupCount', { count: groups.length })}</span></section>
       <section className="toolbar-row">
-        <label className="compact-field">Study group<select value={groupId} onChange={changeGroup}><option value="">Select a group</option>{groups.map((group) => <option key={group.id} value={group.id}>{group.groupNumber} · Course {group.courseNumber}</option>)}</select></label>
-        <label className="compact-field">Record date<input type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
+        <label className="compact-field">{t('attendance.studyGroup')}<select value={groupId} onChange={changeGroup}><option value="">{t('attendance.selectGroup')}</option>{groups.map((group) => <option key={group.id} value={group.id}>{group.groupNumber} · {t('attendance.course')} {group.courseNumber}</option>)}</select></label>
+        <label className="compact-field date-field"><span><CalendarDays size={14} aria-hidden="true" />{t('attendance.recordDate')}</span><input type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
       </section>
-      {!groupId ? <EmptyState message="Choose a study group to load its roster." /> : (
+      {!groupId ? <EmptyState message={t('attendance.chooseGroupPrompt')} /> : (
         <>
           <form onSubmit={submit}>
             <div className="table-wrap">
-              <table><thead><tr><th>Student</th><th>Card no.</th><th>Violation</th><th>Note</th></tr></thead>
+              <table><thead><tr><th>{t('attendance.student')}</th><th>{t('attendance.cardNumber')}</th><th>{t('attendance.violation')}</th><th>{t('attendance.note')}</th></tr></thead>
                 <tbody>{students.map((student) => <tr key={student.id}>
                   <td className="student-name">{student.fullName}</td><td>{student.studentCardNumber}</td>
-                  <td><select aria-label={`Violation for ${student.fullName}`} value={marks[student.id]?.categoryId || ''} onChange={(event) => setMarks((current) => ({ ...current, [student.id]: { ...current[student.id], categoryId: event.target.value } }))}><option value="">Present</option>{violations.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}</select></td>
-                  <td><input aria-label={`Note for ${student.fullName}`} placeholder="Optional note" value={marks[student.id]?.note || ''} onChange={(event) => setMarks((current) => ({ ...current, [student.id]: { ...current[student.id], note: event.target.value } }))} /></td>
+                  <td><select aria-label={t('attendance.violationFor', { name: student.fullName })} value={marks[student.id]?.categoryId || ''} onChange={(event) => setMarks((current) => ({ ...current, [student.id]: { ...current[student.id], categoryId: event.target.value } }))}><option value="">{t('attendance.present')}</option>{violations.map((item) => <option value={item.id} key={item.id}>{t(`attendance.${item.key}`)}</option>)}</select></td>
+                  <td><input aria-label={t('attendance.note')} placeholder={t('attendance.optionalNote')} value={marks[student.id]?.note || ''} onChange={(event) => setMarks((current) => ({ ...current, [student.id]: { ...current[student.id], note: event.target.value } }))} /></td>
                 </tr>)}
-                  {!students.length && !studentsLoading && <tr><td colSpan="4" className="empty-cell">No students are assigned to this group yet.</td></tr>}
+                  {!students.length && !studentsLoading && <tr><td colSpan="4" className="empty-cell">{t('attendance.noStudents')}</td></tr>}
                 </tbody>
               </table>
-              {studentsLoading && <p className="table-message">Loading roster…</p>}
+              {studentsLoading && <p className="table-message">{t('attendance.loadingRoster')}</p>}
             </div>
-            <div className="form-actions"><div>{error && <p className="form-error" role="alert">{error}</p>}{saved && <p className="form-success" role="status">{saved}</p>}</div><button className="button button-primary" disabled={pending || !students.length}>{pending ? 'Saving…' : 'Save attendance'}</button></div>
+            <div className="form-actions"><div>{error && <p className="form-error" role="alert">{error}</p>}{saved !== '' && <p className="form-success" role="status">{t('attendance.attendanceSaved', { count: saved })}</p>}</div><button className="button button-primary" disabled={pending || !students.length}>{!pending && <ClipboardCheck size={16} aria-hidden="true" />}{pending ? t('attendance.saving') : t('attendance.saveAttendance')}</button></div>
           </form>
-          <section className="history-section"><div className="subheading"><div><p className="eyebrow">GROUP RECORD</p><h2>Recent attendance</h2></div></div>
-            {!history.length ? <p className="muted-line">No records for this group yet.</p> : history.map((record) => <button key={record.id} className="history-row" onClick={() => loadHistory(record.id)}><span>{record.date}</span><span>{record.teacherName}</span><span>{record.details.filter((detail) => detail.violationCategoryId).length} violations</span><span className="arrow">↗</span></button>)}
+          <section className="history-section"><div className="subheading"><div><p className="eyebrow">{t('attendance.groupRecord')}</p><h2>{t('attendance.recentAttendance')}</h2></div></div>
+            {!history.length ? <p className="muted-line">{t('attendance.noRecords')}</p> : history.map((record) => <button key={record.id} className="history-row" onClick={() => loadHistory(record.id)}><span>{record.date}</span><span>{record.teacherName}</span><span>{t('attendance.violations', { count: record.details.filter((detail) => detail.violationCategoryId).length })}</span><ArrowUpRight className="arrow" size={17} aria-hidden="true" /></button>)}
           </section>
         </>
       )}
@@ -90,5 +93,5 @@ export default function AttendancePage({ user }) {
 }
 
 function EmptyState({ message }) {
-  return <div className="empty-state"><span className="empty-mark">—</span><p>{message}</p></div>
+  return <div className="empty-state"><ClipboardCheck size={28} aria-hidden="true" /><p>{message}</p></div>
 }

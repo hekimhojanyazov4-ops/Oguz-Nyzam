@@ -1,3 +1,5 @@
+import i18n from './i18n'
+
 const API_ROOT = import.meta.env.VITE_API_URL || '/api'
 
 export async function apiRequest(path, options = {}) {
@@ -6,6 +8,7 @@ export async function apiRequest(path, options = {}) {
     ...options,
     headers: {
       ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+      'Accept-Language': i18n.resolvedLanguage || i18n.language,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },

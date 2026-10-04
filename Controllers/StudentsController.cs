@@ -1,25 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Oguz_Nyzam.API.Data;
 using Oguz_Nyzam.API.DTOs;
 using Oguz_Nyzam.API.Entities;
+using Oguz_Nyzam.API.Resources;
 
 namespace Oguz_Nyzam.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "1,2,3")]
 public class StudentsController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly IStringLocalizer<SharedResource> _localizer;
 
-    public StudentsController(AppDbContext context)
+    public StudentsController(AppDbContext context, IStringLocalizer<SharedResource> localizer)
     {
         _context = context;
+        _localizer = localizer;
     }
 
     [HttpGet("group/{groupId}")]
     public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudentByGroup(int groupId)
     {
+        if (!await HasAccessToGroup(groupId))
+            return NotFound(_localizer["GroupNotFound"]);
+
         var students = await _context.Students
             .Include(s => s.Group)
             .Where(s => s.GroupId == groupId)
@@ -39,7 +48,9 @@ public class StudentsController : ControllerBase
     {
         var group = await _context.Groups.FindAsync(dto.GroupId);
         if (group == null) 
-            return NotFound("Gorkezilen topar bazada yok.");
+            return NotFound(_localizer["GroupNotFound"]);
+        if (!await HasAccessToGroup(dto.GroupId))
+            return NotFound(_localizer["GroupNotFound"]);
         
         var student = new Student
         {
@@ -66,11 +77,15 @@ public class StudentsController : ControllerBase
     {
         var student = await _context.Students.FindAsync(id);
         if (student == null)
-            return NotFound("Talyp tapylmady.");
+            return NotFound(_localizer["StudentNotFound"]);
         
         var group = await _context.Groups.FindAsync(dto.GroupId);
         if (group == null)
-            return NotFound("Gorkezen toparnyz tapylmady.");
+            return NotFound(_localizer["GroupNotFound"]);
+        if (!await HasAccessToGroup(dto.GroupId))
+            return NotFound(_localizer["GroupNotFound"]);
+        if (!await HasAccessToGroup(student.GroupId))
+            return NotFound(_localizer["StudentNotFound"]);
 
         student.FullName = dto.FullName;
         student.StudentCardNumber = dto.StudentCardNumber;
@@ -86,11 +101,26 @@ public class StudentsController : ControllerBase
     {
         var student = await _context.Students.FindAsync(id);
         if (student == null)
-            return NotFound("Talyp tapylmady.");
+            return NotFound(_localizer["StudentNotFound"]);
+        if (!await HasAccessToGroup(student.GroupId))
+            return NotFound(_localizer["StudentNotFound"]);
         
         _context.Students.Remove(student);
         await _context.SaveChangesAsync();
 
         return NoContent();
+    }
+
+    private Task<bool> HasAccessToGroup(int groupId)
+    {
+        if (User.IsInRole("1"))
+            return _context.Groups.AnyAsync(group => group.Id == groupId);
+
+        var facultyClaim = User.FindFirst("FacultyId")?.Value;
+        if (!int.TryParse(facultyClaim, out var facultyId))
+            return Task.FromResult(false);
+
+        return _context.Groups.AnyAsync(group =>
+            group.Id == groupId && group.Course.FacultyId == facultyId);
     }
 }
