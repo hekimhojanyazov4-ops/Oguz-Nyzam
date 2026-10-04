@@ -17,29 +17,31 @@ public class JwtTokenGenerator
 
     public string GenerateToken(User user)
     {
-        var secretKey = _configuration["JwtSettings:Secret"];
+        var secret = _configuration["JwtSettings:Secret"]
+            ?? throw new InvalidOperationException("JWT signing secret is not configured.");
         var issuer = _configuration["JwtSettings:Issuer"];
         var audience = _configuration["JwtSettings:Audience"];
-        var expiryMinutes = Convert.ToDouble(_configuration["JwtSettings:ExpiryMinutes"]);
+        var expiryMinutes = _configuration.GetValue<int?>("JwtSettings:ExpiryMinutes") ?? 60;
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var claims = new[]
+        var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.FullName),
-            new Claim("FacultyId", user.FacultyId.ToString()),
-            new Claim("RoleId", user.RoleId.HasValue ? user.RoleId.Value.ToString() : "0")
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Name, user.FullName),
+            new("FacultyId", user.FacultyId.ToString())
         };
 
+        if (user.RoleId.HasValue)
+            claims.Add(new Claim("RoleId", user.RoleId.Value.ToString()));
+
+        var credentials = new SigningCredentials(
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+            SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
             issuer: issuer,
             audience: audience,
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
-            signingCredentials: creds
-        );
+            signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
